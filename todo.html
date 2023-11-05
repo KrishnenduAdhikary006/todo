@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improved Bootstrap To-Do App</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">To-Do List</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Add a Task</h2>
+                <div class="input-group mb-3">
+                    <input type="text" id="taskInput" class="form-control" placeholder="Enter a task" required>
+                    <div class="input-group-append">
+                        <button id="addTask" class="btn btn-primary" type="button">Add Task</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <ul class="task-list" id="taskList">
+                    <!-- Tasks will be added here dynamically -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        const taskList = document.getElementById("taskList");
+        const taskInput = document.getElementById("taskInput");
+        const addTaskButton = document.getElementById("addTask");
+
+        addTaskButton.addEventListener("click", function () {
+            const taskText = taskInput.value.trim();
+
+            if (taskText === "") {
+                return;
+            }
+
+            const taskItem = document.createElement("li");
+            taskItem.className = "task list-group-item d-flex justify-content-between align-items-center";
+            taskItem.innerHTML = `
+                <span>${taskText}</span>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-success mark-done">Done</button>
+                    <button class="btn btn-danger delete-task">Delete</button>
+                </div>
+            `;
+
+            const deleteButton = taskItem.querySelector(".delete-task");
+            deleteButton.addEventListener("click", function () {
+                taskList.removeChild(taskItem);
+            });
+
+            const doneButton = taskItem.querySelector(".mark-done");
+            doneButton.addEventListener("click", function () {
+                taskItem.classList.add("list-group-item-success");
+                doneButton.disabled = true;
+                doneButton.textContent = "Done";
+            });
+
+            taskList.appendChild(taskItem);
+            taskInput.value = "";
+        });
+    </script>
+</body>
+</html>
